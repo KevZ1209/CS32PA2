@@ -21,7 +21,7 @@ class Map
     Map& operator=(const Map& rhs);
     
     // destructor
-//    ~Map();
+    ~Map();
     
     bool empty() const;
 

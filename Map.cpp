@@ -18,6 +18,42 @@ Map::Map() {
     tail = nullptr;
 }
 
+// Destructor
+Map::~Map() {
+    Node *p = head;
+    while (p != nullptr) {
+        // create a temporary pointer to store pointer to next Node
+        Node *n = p->next;
+        
+        // delete Node that p points to
+        delete p;
+        
+        // p points to next Node
+        p = n;
+    }
+}
+
+// Copy Constructor
+Map::Map(const Map& other) {
+    head = nullptr;
+    tail = nullptr;
+    m_size = 0;
+    
+    for (Node *p = other.head; p != nullptr; p = p->next) {
+        insert(p->key, p->value);
+    }
+}
+
+// Assignment Operator
+Map& Map::operator=(const Map& rhs) {
+    // only assign if objects are different to save resources
+    if (this != &rhs) {
+        Map temp(rhs); // copy-and-swap method
+        swap(temp);
+    }
+    return *this;
+}
+
 bool Map::empty() const {
     return m_size==0;
 }
@@ -143,83 +179,84 @@ bool Map::erase(const KeyType& key) {
 }
 
 
-//bool Map::contains(const KeyType& key) const {
-//    // Return true if key is equal to a key currently in the map, otherwise
-//    // false.
-//    for (int i=0; i<m_size; i++) {
-//        if (key == m_map[i].key) {
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-//
-//bool Map::get(const KeyType& key, ValueType& value) const {
-//    // If key is equal to a key currently in the map, set value to the
-//    // value in the map which that key maps to, and return true.  Otherwise,
-//    // make no change to the value parameter of this function and return
-//    // false.
-//    for (int i=0; i<m_size; i++) {
-//        if (key == m_map[i].key) {
-//            value = m_map[i].value;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-//
-//bool Map::get(int i, KeyType& key, ValueType& value) const {
-//    // If 0 <= i < size(), copy into the key and value parameters the
-//    // key and value of the key/value pair in the map whose key is strictly
-//    // greater than exactly i keys in the map and return true.  Otherwise,
-//    // leave the key and value parameters unchanged and return false.
-//
-//    if (i < 0 || i >= m_size) {
-//        return false;
-//    }
-//
-//
-//
-//    for (int a = 0; a < m_size; a++) {
-//        int counter = 0;
-//        for (int b = 0; b < m_size; b++) {
-//
-//            if (m_map[a].key > m_map[b].key) {
-//                counter++;
-//            }
-//
-//        }
-//
-//        if (counter == i) {
-//            key = m_map[a].key;
-//            value = m_map[a].value;
-//            return true;
-//        }
-//
-//    }
-//    std::cerr << "Shouldn't happen" << std::endl;
-//    return false;
-//}
-//
-//
-//void Map::swap(Map& other) {
-//  // Exchange the contents of this map with the other one.
-//    int temp_size = other.m_size;
-//    other.m_size = m_size;
-//    m_size = temp_size;
-//
-//    int bigger_size = m_size;
-//
-//    if (other.m_size > m_size) {
-//        bigger_size = other.m_size;
-//    }
-//
-//    for (int i = 0; i < bigger_size; i++) {
-//        Node temp = other.m_map[i];
-//        other.m_map[i] = m_map[i];
-//        m_map[i] = temp;
-//    }
-//}
+bool Map::contains(const KeyType& key) const {
+    // Return true if key is equal to a key currently in the map, otherwise
+    // false.
+    Node* p = head;
+    while (p != nullptr) {
+        if (p->key == key) {
+            return true;
+        }
+        p = p->next;
+    }
+    return false;
+}
+
+bool Map::get(const KeyType& key, ValueType& value) const {
+    // If key is equal to a key currently in the map, set value to the
+    // value in the map which that key maps to, and return true.  Otherwise,
+    // make no change to the value parameter of this function and return
+    // false.
+    Node* p = head;
+    while (p != nullptr) {
+        if (p->key == key) {
+            value = p->value;
+            return true;
+        }
+        p = p->next;
+    }
+    return false;
+}
+
+bool Map::get(int i, KeyType& key, ValueType& value) const {
+    // If 0 <= i < size(), copy into the key and value parameters the
+    // key and value of the key/value pair in the map whose key is strictly
+    // greater than exactly i keys in the map and return true.  Otherwise,
+    // leave the key and value parameters unchanged and return false.
+    
+    // if invalid i
+    if (i < 0 || i >= m_size) {
+        return false;
+    }
+    
+    // loop through map
+    for (Node *p = head; p != nullptr; p = p->next) {
+        int count_below = 0;
+        // for each element in Map, determine how many keys it is greater than
+        for (Node *q = head; q != nullptr; q = q->next) {
+            if (p->key > q->key) {
+                count_below++;
+            }
+        }
+        // if the number of keys in the map less than p is equal to i, set values and return true
+        if (count_below == i) {
+            key = p->key;
+            value = p->value;
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void Map::swap(Map& other) {
+  // Exchange the contents of this map with the other one.
+    
+    // switch the sizes
+    int temp_size = other.m_size;
+    other.m_size = m_size;
+    m_size = temp_size;
+
+    // switch head pointers
+    Node *temp = head;
+    head = other.head;
+    other.head = temp;
+    
+    // switch tail pointers
+    temp = tail;
+    tail = other.tail;
+    other.tail = temp;
+}
 
 void Map::dump() const {
     cerr << "Forward Propagation:" << endl;

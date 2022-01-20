@@ -10,9 +10,26 @@
 
 int main() {
     Map m = Map();
-
-    m.erase("carey2");
-    m.erase("david");
+    m.insertOrUpdate("Otto Octavius", 8);
+    m.insertOrUpdate("Green Goblin", 2002);
+    m.insertOrUpdate("Carey", 10);
+    m.insertOrUpdate("David", 12);
+    
+    Map n = Map();
+    n.insertOrUpdate("Rey", 8);
+    n.insertOrUpdate("Obi Wan", 1);
+    n.insertOrUpdate("Boba Fett", 5);
+    
+    m.swap(n);
+    
+    Map c;
+    Map d = c;
+    n = m;
+    m.insert("jango Fett", 61);
+    d.insert("darth sidious", 66);
     
     m.dump();
+    n.dump();
+    c.dump();
+    d.dump();
 }
