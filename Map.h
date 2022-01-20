@@ -60,4 +60,8 @@ class Map
     Node *tail;
 };
 
+// non-member functions
+bool merge(const Map& m1, const Map& m2, Map& result);
+void reassign(const Map& m, Map& result);
+
 #endif
