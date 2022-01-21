@@ -18,7 +18,7 @@ int main() {
     Map n = Map();
     n.insertOrUpdate("Rey", 8);
     n.insertOrUpdate("Obi Wan", 1);
-    n.insertOrUpdate("David", 12);
+    n.insertOrUpdate("David", 120);
     n.insertOrUpdate("Boba Fett", 5);
     
     Map c;
@@ -32,10 +32,8 @@ int main() {
 //    c.dump();
 //    d.dump();
     
-    merge(m, n, c);
+    cerr << merge(m, n, m) << endl;
     
     m.dump();
-    n.dump();
-    c.dump();
     
 }
