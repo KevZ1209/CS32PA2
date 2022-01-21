@@ -288,44 +288,67 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
     
     bool is_valid_merge = true;
     
-    // empty out result map
-    while (result.size() > 0) {
-        KeyType to_erase;
-        ValueType v;
-        // keep erasing the first element until there are none left
-        result.get(0, to_erase, v);
-        result.erase(to_erase);
-    }
-    
-    // Copy m1 into result
-    result = m1;
-    
-    // loop through m2
-    for (int i = 0; i < m2.size(); i++) {
-        KeyType curr_key;
-        ValueType curr_val;
-        // get current key and value
-        m2.get(i, curr_key, curr_val);
-        
-        // if current key matches a key in m1
-        if (m1.contains(curr_key)) {
-            ValueType m1_val;
-            // get the corresponding value for m1
-            m1.get(curr_key, m1_val);
+    if (&result == &m1) {
+        // loop through m2
+        for (int i = 0; i < m2.size(); i++) {
+            KeyType curr_key;
+            ValueType curr_val;
+            // get current key and value
+            m2.get(i, curr_key, curr_val);
             
-            // if values are different for the same key
-            if (curr_val != m1_val) {
-                // delete the Node from result and change return value to false
-                result.erase(curr_key);
-                is_valid_merge = false;
+            // if current key matches a key in m1
+            if (m1.contains(curr_key)) {
+                ValueType m1_val;
+                // get the corresponding value for m1
+                m1.get(curr_key, m1_val);
+                
+                // if values are different for the same key
+                if (curr_val != m1_val) {
+                    // delete the Node from result and change return value to false
+                    result.erase(curr_key);
+                    is_valid_merge = false;
+                }
             }
+            else {
+                // if key is different, just insert it into result
+                result.insert(curr_key, curr_val);
+            }
+            
         }
-        else {
-            // if key is different, just insert it into result
-            result.insert(curr_key, curr_val);
+    }
+    else {
+        result = m2;
+        // loop through m1
+        for (int i = 0; i < m1.size(); i++) {
+            KeyType curr_key;
+            ValueType curr_val;
+            // get current key and value
+            m1.get(i, curr_key, curr_val);
+            
+            // if current key matches a key in m1
+            if (m2.contains(curr_key)) {
+                ValueType m2_val;
+                // get the corresponding value for m1
+                m2.get(curr_key, m2_val);
+                
+                // if values are different for the same key
+                if (curr_val != m2_val) {
+                    // delete the Node from result and change return value to false
+                    result.erase(curr_key);
+                    is_valid_merge = false;
+                }
+            }
+            else {
+                // if key is different, just insert it into result
+                result.insert(curr_key, curr_val);
+            }
+            
         }
-        
     }
     
     return is_valid_merge;
+}
+
+void reassign(const Map& m, Map& result) {
+    
 }
