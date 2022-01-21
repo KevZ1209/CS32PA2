@@ -288,6 +288,23 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
     
     bool is_valid_merge = true;
     
+<<<<<<< HEAD
+    // Copy m1 into result
+    result = m1;
+    
+    // loop through m2
+    for (int i = 0; i < m2.size(); i++) {
+        KeyType curr_key;
+        ValueType curr_val;
+        // get current key and value
+        m2.get(i, curr_key, curr_val);
+        
+        // if current key matches a key in m1
+        if (m1.contains(curr_key)) {
+            ValueType m1_val;
+            // get the corresponding value for m1
+            m1.get(curr_key, m1_val);
+=======
     if (&result == &m1) {
         // loop through m2
         for (int i = 0; i < m2.size(); i++) {
@@ -295,6 +312,7 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
             ValueType curr_val;
             // get current key and value
             m2.get(i, curr_key, curr_val);
+>>>>>>> Aliasing
             
             // if current key matches a key in m1
             if (m1.contains(curr_key)) {
