@@ -288,15 +288,6 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
     
     bool is_valid_merge = true;
     
-    // empty out result map
-    while (result.size() > 0) {
-        KeyType to_erase;
-        ValueType v;
-        // keep erasing the first element until there are none left
-        result.get(0, to_erase, v);
-        result.erase(to_erase);
-    }
-    
     // Copy m1 into result
     result = m1;
     
