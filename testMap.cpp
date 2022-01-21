@@ -10,10 +10,11 @@
 
 int main() {
     Map m = Map();
-    m.insertOrUpdate("Otto Octavius", 8);
-    m.insertOrUpdate("Green Goblin", 2002);
+    
     m.insertOrUpdate("Carey", 10);
     m.insertOrUpdate("David", 12);
+    m.insertOrUpdate("Green Goblin", 2002);
+    m.insertOrUpdate("Otto Octavius", 8);
     
     Map n = Map();
     n.insertOrUpdate("Rey", 8);
@@ -32,8 +33,8 @@ int main() {
 //    c.dump();
 //    d.dump();
     
-    cerr << merge(m, n, m) << endl;
+    reassign(n, c);
     
-    m.dump();
+    c.dump();
     
 }

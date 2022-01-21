@@ -288,6 +288,7 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
     
     bool is_valid_merge = true;
     
+    // check for aliasing
     if (&result == &m1) {
         // loop through m2
         for (int i = 0; i < m2.size(); i++) {
@@ -350,5 +351,33 @@ bool merge(const Map& m1, const Map& m2, Map& result) {
 }
 
 void reassign(const Map& m, Map& result) {
+    result = m;
+    if (m.size() <= 1) {
+        return;
+    }
     
+    // store the first node's keys and values as well as the last node's
+    KeyType first_key;
+    ValueType first_val;
+    KeyType last_key;
+    ValueType last_val;
+
+
+    result.get(0, first_key, first_val);
+    result.get(result.size()-1, last_key, last_val);
+    
+    for (int i = 0; i < result.size()-1; i++) {
+        KeyType k;
+        ValueType v;
+        KeyType next_k;
+        ValueType next_v;
+
+        result.get(i, k, v);
+        result.get(i+1, next_k, next_v);
+
+        result.update(k, next_v);
+    }
+    
+    // set the last node's value to the starting first node's value
+    result.update(last_key, first_val);
 }
